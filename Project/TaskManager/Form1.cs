@@ -39,7 +39,19 @@ namespace TaskManager
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.taskFactory.SaveFile();
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Select Destination";
+            sfd.InitialDirectory = Directory.GetCurrentDirectory();
+            sfd.Filter = "Saved Task (*.svtsk) | *.svtsk";
+            sfd.ShowDialog();
+            if (sfd.FileName != "")
+            {
+                Program.taskFactory.SaveFile(sfd.FileName);
+            }
+            else
+            {
+                MessageBox.Show("No file found");
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -53,7 +65,6 @@ namespace TaskManager
             if(ofd.FileName != "")
             {
                 Program.taskFactory.LoadFile(ofd.FileName);
-                //MessageBox.Show(TaskData.Instance.tasks.Select(x => x.name).First());
                 Program.taskFactory.UpdateTask(Tasks);
             }
             else

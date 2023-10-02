@@ -44,9 +44,9 @@ namespace TaskManager
             TaskData.Instance.tasks.Remove(task);
         }
 
-        public async void SaveFile()
+        public async void SaveFile(string path)
         {
-            await serializer.SaveFileAsync(TaskData.Instance);
+            await serializer.SaveFileAsync(TaskData.Instance, path);
         }
 
         public void LoadFile(string path)
@@ -73,19 +73,17 @@ namespace TaskManager
 
     internal class Serializer
     {
-        string path = Directory.GetCurrentDirectory();
-        public async System.Threading.Tasks.Task SaveFileAsync(TaskData tasks)
+        //string path = Directory.GetCurrentDirectory();
+        public async System.Threading.Tasks.Task SaveFileAsync(TaskData tasks, string path)
         {
             try
             {
-                string filePath = Path.Combine(path, "tasks.svtsk");
-
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (StreamWriter writer = new StreamWriter(path))
                 {
                     var data = JsonConvert.SerializeObject(tasks, Formatting.Indented);
                     await writer.WriteAsync(data);
                 }
-                var msg = MessageBox.Show($"Save completed at {filePath}");
+                var msg = MessageBox.Show($"Save completed at {path}");
             }
             catch (Exception ex)
             {
